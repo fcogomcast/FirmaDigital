@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions name="FirmaV2" targetNamespace="http://services.tributasenasturias.es/FirmaV2/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://services.tributasenasturias.es/FirmaV2/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://services.tributasenasturias.es/FirmaV2/">
+      <xsd:element name="Firmar">
+        <xsd:complexType>
+          <xsd:sequence>
+          	<xsd:element name="xmlData" type="xsd:string"
+          		minOccurs="1" maxOccurs="1">
+          		<xsd:annotation>
+          			<xsd:documentation>
+          				Texto de entrada con el mensaje SOAP.
+          			</xsd:documentation>
+          		</xsd:annotation>
+          	</xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="FirmarResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+          	<xsd:element name="xmlFirmado" type="xsd:string">
+          		<xsd:annotation>
+          			<xsd:documentation>
+          				Texto del mensaje SOAP firmado.
+          			</xsd:documentation>
+          		</xsd:annotation>
+          	</xsd:element>
+          	<xsd:element name="resultado">
+          		<xsd:annotation>
+          			<xsd:documentation>
+          				Resultado de la operación: OK = ha podido
+          				firmar, y en xmlFirmado estará el texto del
+          				mensaje. KO = no ha podido firmar.
+          			</xsd:documentation>
+          		</xsd:annotation>
+          		<xsd:simpleType>
+          			<xsd:restriction base="xsd:string">
+          				<xsd:enumeration value="OK"></xsd:enumeration>
+          				<xsd:enumeration value="KO"></xsd:enumeration>
+          			</xsd:restriction>
+          		</xsd:simpleType>
+          	</xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Validar">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="xmlFirmado" type="xsd:string" minOccurs="1" maxOccurs="1">
+      				<xsd:annotation>
+      					<xsd:documentation>
+      						XML cuya firma se validará.
+      					</xsd:documentation>
+      				</xsd:annotation></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ValidarResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="esValido" type="xsd:boolean"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="FirmarRequest">
+    <wsdl:part element="tns:Firmar" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="FirmarResponse">
+    <wsdl:part element="tns:FirmarResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="ValidarRequest">
+  	<wsdl:part name="parameters" element="tns:Validar"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ValidarResponse">
+  	<wsdl:part name="parameters" element="tns:ValidarResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="FirmaV2">
+    <wsdl:operation name="Firmar">
+      <wsdl:documentation>Firma el mensaje SOAP que le llega en formato de cadena de texto</wsdl:documentation>
+      <wsdl:input message="tns:FirmarRequest"/>
+      <wsdl:output message="tns:FirmarResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="Validar">
+    	<wsdl:input message="tns:ValidarRequest"></wsdl:input>
+    	<wsdl:output message="tns:ValidarResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="FirmaV2SOAP" type="tns:FirmaV2">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Firmar">
+      <soap:operation soapAction="http://services.tributasenasturias.es/FirmaV2/Firmar"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Validar">
+      <soap:operation soapAction="http://services.tributasenasturias.es/FirmaV2/Validar"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FirmaV2">
+    <wsdl:port binding="tns:FirmaV2SOAP" name="FirmaV2SOAP">
+      <soap:address location="http://services.tributasenasturias.es"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

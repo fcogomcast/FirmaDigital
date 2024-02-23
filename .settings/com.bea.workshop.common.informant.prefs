@@ -1,0 +1,3 @@
+#Mon Nov 08 18:19:48 CET 2010
+eclipse.preferences.version=1
+informants/com.bea.workshop.webservices.core.webServiceSource=com.bea.workshop.webservices.core.informants.JWSInformant,
